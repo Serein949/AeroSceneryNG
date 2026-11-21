@@ -1,0 +1,217 @@
+<Window x:Class="AeroSceneryNG.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:AeroSceneryNG.UI"
+        Title="{ui:Tr Key='设置'}" Height="820" Width="720"
+        WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BgBrush}">
+
+    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="64"/>
+            </Grid.RowDefinitions>
+
+            <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <Grid Margin="18,0">
+                    <TextBlock Text="{ui:Tr Key='设置与密钥'}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource IconButton}" HorizontalAlignment="Right" Click="Cancel_Click">
+                        <Path Data="M 0,0 L 10,10 M 10,0 L 0,10" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.2"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="22,18">
+                <StackPanel>
+                    <!-- appearance -->
+                    <TextBlock Text="{ui:Tr Key='外观'}" Style="{StaticResource SectionLabel}"/>
+                    <Border Background="{DynamicResource SubtleBrush}" CornerRadius="10" Padding="3">
+                        <UniformGrid Columns="2">
+                            <RadioButton x:Name="DarkThemeRadio" GroupName="Theme" Style="{StaticResource SegmentRadio}" Content="{ui:Tr Key='深色主题'}"/>
+                            <RadioButton x:Name="LightThemeRadio" GroupName="Theme" Style="{StaticResource SegmentRadio}" Content="{ui:Tr Key='浅色主题'}"/>
+                        </UniformGrid>
+                    </Border>
+                    <TextBlock Text="{ui:Tr Key='主题会立即切换并记住，下次启动保持不变。'}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
+
+                    <TextBlock Text="{ui:Tr Key='语言 / Language'}" Style="{StaticResource SectionLabel}" Margin="0,16,0,6"/>
+                    <Border Background="{DynamicResource SubtleBrush}" CornerRadius="10" Padding="3">
+                        <UniformGrid Columns="2">
+                            <RadioButton x:Name="ChineseRadio" GroupName="Language" Style="{StaticResource SegmentRadio}"
+                                         Content="{ui:Tr Key='中文'}" Checked="Language_Checked"/>
+                            <RadioButton x:Name="EnglishRadio" GroupName="Language" Style="{StaticResource SegmentRadio}"
+                                         Content="English" Checked="Language_Checked"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <!-- image processing -->
+                    <Grid>
+                        <TextBlock Text="{ui:Tr Key='影像处理'}" Style="{StaticResource SectionLabel}" Margin="0"/>
+                        <CheckBox x:Name="ProcessingCheck" Style="{StaticResource FlatCheck}" Content="{ui:Tr Key='启用'}"
+                                  HorizontalAlignment="Right" IsChecked="False" Margin="0"/>
+                    </Grid>
+                    <TextBlock Text="{ui:Tr Key='对每张 2048×2048 影像做色彩校正；默认关闭，关闭时完全保留原始影像。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,10"/>
+                    <StackPanel x:Name="ProcessingPanel" IsEnabled="False">
+                        <Grid>
+                            <TextBlock Text="{ui:Tr Key='亮度'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="BrightnessValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Slider x:Name="BrightnessSlider" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged"/>
+
+                        <Grid Margin="0,8,0,0">
+                            <TextBlock Text="{ui:Tr Key='对比度'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="ContrastValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Slider x:Name="ContrastSlider" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged"/>
+
+                        <Grid Margin="0,8,0,0">
+                            <TextBlock Text="{ui:Tr Key='饱和度'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="SaturationValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Slider x:Name="SaturationSlider" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged"/>
+
+                        <Grid Margin="0,8,0,0">
+                            <TextBlock Text="{ui:Tr Key='锐度'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="SharpnessValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Slider x:Name="SharpnessSlider" Style="{StaticResource FlatSlider}" Minimum="0" Maximum="100"
+                                TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged"/>
+
+                        <Grid Margin="0,8,0,0">
+                            <TextBlock Text="{ui:Tr Key='红 / 绿 / 蓝通道'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="RgbValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider x:Name="RedSlider" Grid.Column="0" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                    TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged" Margin="0,0,6,0"/>
+                            <Slider x:Name="GreenSlider" Grid.Column="1" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                    TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged" Margin="3,0,3,0"/>
+                            <Slider x:Name="BlueSlider" Grid.Column="2" Style="{StaticResource FlatSlider}" Minimum="-100" Maximum="100"
+                                    TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="Tuning_ValueChanged" Margin="6,0,0,0"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <!-- water -->
+                    <Grid>
+                        <TextBlock Text="{ui:Tr Key='水面颜色统一'}" Style="{StaticResource SectionLabel}" Margin="0"/>
+                        <CheckBox x:Name="WaterCheck" Style="{StaticResource FlatCheck}" Content="{ui:Tr Key='启用'}"
+                                  HorizontalAlignment="Right" IsChecked="False" Margin="0"/>
+                    </Grid>
+                    <TextBlock Text="{ui:Tr Key='按颜色识别偏蓝的水体并统一到指定颜色。这是近似处理，不是 OSM 水面掩膜；会误判蓝色屋顶，可随时关闭。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,10"/>
+                    <StackPanel x:Name="WaterPanel" IsEnabled="False">
+                        <Grid>
+                            <TextBlock Text="{ui:Tr Key='目标颜色（#RRGGBB）'}" Style="{StaticResource Muted}"/>
+                            <TextBlock x:Name="WaterStrengthValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="WaterColorBox" Style="{StaticResource FlatTextBox}" Text="#1B4F8A"/>
+                            <Slider x:Name="WaterStrengthSlider" Grid.Column="1" Style="{StaticResource FlatSlider}" Minimum="0" Maximum="100"
+                                    TickFrequency="10" IsSnapToTickEnabled="True" Margin="12,0,0,0" ValueChanged="Tuning_ValueChanged"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='天地图密钥'}" Style="{StaticResource SectionLabel}"/>
+                    <TextBox x:Name="TiandituBox" Style="{StaticResource FlatTextBox}"/>
+                    <TextBlock Text="{ui:Tr Key='天地图国家影像在中国大陆分辨率最高（最高约 0.5 m/px）。在 tianditu.gov.cn 免费注册后，把浏览器端密钥贴到这里。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='Mapbox 访问令牌'}" Style="{StaticResource SectionLabel}"/>
+                    <TextBox x:Name="MapboxBox" Style="{StaticResource FlatTextBox}"/>
+                    <TextBlock Text="{ui:Tr Key='只有 Mapbox 卫星图源需要，免费账号即可；留空时该图源不可用。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='Aerofly FS 4 场景目录'}" Style="{StaticResource SectionLabel}"/>
+                    <TextBox x:Name="SceneryBox" Style="{StaticResource FlatTextBox}"/>
+                    <TextBlock Text="{ui:Tr Key='电脑版 .ttc 会按 map_09_xxxx_yyyy 子目录复制到这里（通常是 文档/Aerofly FS 4/scenery/images）。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='手机 FSG 工作目录（可选）'}" Style="{StaticResource SectionLabel}"/>
+                    <TextBox x:Name="FsgBox" Style="{StaticResource FlatTextBox}"/>
+                    <TextBlock Text="{ui:Tr Key='如果手机通过 USB 挂载为磁盘，可填写 Android/data/com.aerofly.aeroflyfsg1/files；否则先输出到电脑再复制。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='附加输出'}" Style="{StaticResource SectionLabel}"/>
+                    <CheckBox x:Name="SaveOriginalCheck" Style="{StaticResource FlatCheck}" Content="{ui:Tr Key='同时保存未处理原图（PNG）'}"
+                              IsChecked="False" Checked="Original_Checked" Unchecked="Original_Checked"/>
+                    <TextBlock Text="{ui:Tr Key='每块 2048×2048 的原始拼接图单独保存，方便外部修图或留档；默认关闭。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                    <StackPanel x:Name="OriginalPanel" IsEnabled="False">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="OriginalBox" Style="{StaticResource FlatTextBox}"/>
+                            <Button Grid.Column="1" Content="{ui:Tr Key='浏览'}" Style="{StaticResource GhostButton}" Margin="8,0,0,0" Click="BrowseOriginal_Click"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,18"/>
+
+                    <TextBlock Text="{ui:Tr Key='缓存管理'}" Style="{StaticResource SectionLabel}"/>
+                    <TextBlock Text="{ui:Tr Key='缓存目录（可移到空间更大的磁盘）'}" Style="{StaticResource Muted}" Margin="0,0,0,4"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="CacheDirBox" Style="{StaticResource FlatTextBox}"/>
+                        <Button Grid.Column="1" Content="{ui:Tr Key='浏览'}" Style="{StaticResource GhostButton}" Margin="8,0,0,0" Click="BrowseCache_Click"/>
+                    </Grid>
+                    <Grid Margin="0,10,0,0">
+                        <TextBlock Text="{ui:Tr Key='缓存上限'}" Style="{StaticResource Muted}"/>
+                        <TextBlock x:Name="CacheLimitValue" Style="{StaticResource Muted}" HorizontalAlignment="Right" Foreground="{DynamicResource TextBrush}"/>
+                    </Grid>
+                    <Slider x:Name="CacheLimitSlider" Style="{StaticResource FlatSlider}" Minimum="0" Maximum="20480"
+                            TickFrequency="512" IsSnapToTickEnabled="True" ValueChanged="CacheLimit_ValueChanged"/>
+                    <CheckBox x:Name="AutoCleanCheck" Style="{StaticResource FlatCheck}" Content="{ui:Tr Key='超过上限时自动清理最旧的瓦片'}"
+                              IsChecked="True" Margin="0,6,0,0"/>
+                    <TextBlock Text="{ui:Tr Key='如果 C 盘空间异常减少，通常是瓦片缓存累积；把缓存目录改到其他盘即可。生成结束后会自动按上限清理。'}"
+                               Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock x:Name="CacheSizeText" Style="{StaticResource Muted}" VerticalAlignment="Center"/>
+                        <Button Content="{ui:Tr Key='清空缓存'}" Style="{StaticResource GhostButton}" Margin="12,0,0,0" Click="ClearCache_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,18,0">
+                    <Button Content="{ui:Tr Key='取消'}" Style="{StaticResource GhostButton}" Padding="20,8" Click="Cancel_Click"/>
+                    <Button Content="{ui:Tr Key='保存设置'}" Style="{StaticResource PrimaryButton}" Height="38" MinWidth="112" Padding="26,0" Margin="10,0,0,0" Click="Save_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
