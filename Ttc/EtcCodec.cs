@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace AeroSceneryNG.Ttc;
 
@@ -13,6 +14,45 @@ namespace AeroSceneryNG.Ttc;
 /// </summary>
 public static class EtcCodec
 {
+    /// <summary>Skip differential-mode search for faster encoding on low-power devices.</summary>
+    public static bool FastMode { get; set; }
+
+    /// <summary>Use the native NEON etcpak encoder when the platform library is present.</summary>
+    public static bool UseNative { get; set; } = OperatingSystem.IsAndroid();
+
+    private static class EtcNative
+    {
+        private static bool _unavailable;
+
+        [DllImport("etcpak", EntryPoint = "asng_etc2_encode", CallingConvention = CallingConvention.Cdecl)]
+        private static extern unsafe void Encode(byte* src, int width, int height, byte* dst, int heuristics);
+
+        public static unsafe bool TryEncode(ReadOnlySpan<byte> rgba, int width, int height, Span<byte> dest)
+        {
+            if (_unavailable || width <= 0 || height <= 0) return false;
+            if (rgba.Length < width * height * 4 || dest.Length < width * height / 2) return false;
+            try
+            {
+                fixed (byte* src = rgba)
+                fixed (byte* dst = dest)
+                {
+                    Encode(src, width, height, dst, 1);
+                }
+                return true;
+            }
+            catch (DllNotFoundException)
+            {
+                _unavailable = true;
+                return false;
+            }
+            catch (EntryPointNotFoundException)
+            {
+                _unavailable = true;
+                return false;
+            }
+        }
+    }
+
     // ETC1 / ETC2 modifier table (small, large).
     private static readonly int[] Modifier = [2, 8, 5, 17, 9, 29, 13, 42, 18, 60, 24, 80, 33, 106, 47, 183];
     // Indexed [2][8] flattened: Etc1Modifier[table*2 + which].
@@ -432,8 +472,14 @@ public static class EtcCodec
     // ---------------------------------------------------------------------------------------
 
     public static void EncodeEtc2Rgb(ReadOnlySpan<byte> rgba, int width, int height, Span<byte> dest)
-        => EtcEncoder.EncodeRgb(rgba, width, height, dest);
+    {
+        if (UseNative && EtcNative.TryEncode(rgba, width, height, dest)) return;
+        EtcEncoder.EncodeRgb(rgba, width, height, dest);
+    }
 
     public static void EncodeEtc2Rgba(ReadOnlySpan<byte> rgba, int width, int height, Span<byte> dest)
-        => EtcEncoder.EncodeRgba(rgba, width, height, dest);
+    {
+        if (UseNative && EtcNative.TryEncode(rgba, width, height, dest)) return;
+        EtcEncoder.EncodeRgba(rgba, width, height, dest);
+    }
 }

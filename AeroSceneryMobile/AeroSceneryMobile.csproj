@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.aeroscenery.mobile</ApplicationId>
+    <ApplicationVersion>5</ApplicationVersion>
+    <ApplicationDisplayVersion>0.5</ApplicationDisplayVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <PublishTrimmed>false</PublishTrimmed>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.16.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Core\Afs2Grid.cs" Link="Core\Afs2Grid.cs" />
+    <Compile Include="..\Core\AppSettings.cs" Link="Core\AppSettings.cs" />
+    <Compile Include="..\Core\GeoBounds.cs" Link="Core\GeoBounds.cs" />
+    <Compile Include="..\Core\ImageTuning.cs" Link="Core\ImageTuning.cs" />
+    <Compile Include="..\Core\ImageryCache.cs" Link="Core\ImageryCache.cs" />
+    <Compile Include="..\Core\MapSource.cs" Link="Core\MapSource.cs" />
+    <Compile Include="..\Core\MapSources.cs" Link="Core\MapSources.cs" />
+    <Compile Include="..\Core\MosaicComposer.cs" Link="Core\MosaicComposer.cs" />
+    <Compile Include="..\Core\SceneryBuilder.cs" Link="Core\SceneryBuilder.cs" />
+    <Compile Include="..\Core\SceneryTarget.cs" Link="Core\SceneryTarget.cs" />
+    <Compile Include="..\Core\TileMath.cs" Link="Core\TileMath.cs" />
+    <Compile Include="..\Core\TileSelection.cs" Link="Core\TileSelection.cs" />
+    <Compile Include="..\Core\Localization.cs" Link="Core\Localization.cs" />
+    <Compile Include="..\Core\TmePackager.cs" Link="Core\TmePackager.cs" />
+    <Compile Include="..\Ttc\EtcCodec.cs" Link="Ttc\EtcCodec.cs" />
+    <Compile Include="..\Ttc\EtcEncoder.cs" Link="Ttc\EtcEncoder.cs" />
+    <Compile Include="..\Ttc\TtcBcEncoder.cs" Link="Ttc\TtcBcEncoder.cs" />
+    <Compile Include="..\Ttc\TtcCompress.cs" Link="Ttc\TtcCompress.cs" />
+    <Compile Include="..\Ttc\TtcImage.cs" Link="Ttc\TtcImage.cs" />
+    <Compile Include="..\Ttc\TtcMipChain.cs" Link="Ttc\TtcMipChain.cs" />
+    <Compile Include="..\Ttc\TtcReader.cs" Link="Ttc\TtcReader.cs" />
+    <Compile Include="..\Ttc\TtcWriter.cs" Link="Ttc\TtcWriter.cs" />
+    <Compile Include="..\Ttc\Lzham\*.cs" Link="Ttc\Lzham\%(Filename)%(Extension)" />
+    <Compile Include="..\Tth\TerrariumDem.cs" Link="Tth\TerrariumDem.cs" />
+    <Compile Include="..\Tth\TthFile.cs" Link="Tth\TthFile.cs" />
+    <Compile Include="..\Tth\TthWriter.cs" Link="Tth\TthWriter.cs" />
+  </ItemGroup>
+</Project>

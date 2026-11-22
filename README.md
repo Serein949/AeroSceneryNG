@@ -255,3 +255,14 @@ AeroSceneryNG.Cli.exe --tth maph_10_d2c0_9f40.tth --tth-png
 
 本项目是**非官方工具**，与 AeroFly / Aerofly FS 的开发商和发行商无关联。仓库不包含任何官方游戏 `.ttc` / `.tth`、图源缓存、API 密钥或下载的影像。使用者需自行遵守各图源的服务条款。
 
+---
+
+## 10. Android 版
+
+仓库同时包含 Android 客户端源码（`AeroSceneryMobile/`），用于在手机上直接生成 FSG 地景：
+
+- 版本 **0.5**，`arm64-v8a` / `x86_64`，Android 7.0+。
+- 原生 NEON ETC2 编码（etcpak），实测 2 个 L9 瓦片热缓存约 1 秒。
+- APK 见 Releases 的 `android-v0.5`，构建与安装说明见 [`ANDROID.md`](ANDROID.md)。
+- 签名 keystore 不包含在仓库中。
+

@@ -201,22 +201,25 @@ internal static unsafe class EtcEncoder
             }
 
             // ---- differential mode (RGB555 base + 3-bit delta) ----
-            Optimize(block, pos0, diff: true, constrained: false, 0, 0, 0,
-                out int td0, out int b0r, out int b0g, out int b0b, selTmp, out int ed0);
-            Optimize(block, pos1, diff: true, constrained: true, b0r, b0g, b0b,
-                out int td1, out int b1r, out int b1g, out int b1b, selTmp, out int ed1);
-            int totalD = ed0 + ed1;
-            if (totalD < bestErr)
+            if (!EtcCodec.FastMode)
             {
-                Eval(block, pos0, b0r, b0g, b0b, td0, true, selTmp);
-                Eval(block, pos1, b1r, b1g, b1b, td1, true, selTmp);
-                for (int i = 0; i < 16; i++) selBest[i] = selTmp[i];
-                bestErr = totalD;
-                bestFlip = flip;
-                bestDiff = 1;
-                bestT0 = td0; bestT1 = td1;
-                bestB0r = b0r; bestB0g = b0g; bestB0b = b0b;
-                bestB1r = b1r; bestB1g = b1g; bestB1b = b1b;
+                Optimize(block, pos0, diff: true, constrained: false, 0, 0, 0,
+                    out int td0, out int b0r, out int b0g, out int b0b, selTmp, out int ed0);
+                Optimize(block, pos1, diff: true, constrained: true, b0r, b0g, b0b,
+                    out int td1, out int b1r, out int b1g, out int b1b, selTmp, out int ed1);
+                int totalD = ed0 + ed1;
+                if (totalD < bestErr)
+                {
+                    Eval(block, pos0, b0r, b0g, b0b, td0, true, selTmp);
+                    Eval(block, pos1, b1r, b1g, b1b, td1, true, selTmp);
+                    for (int i = 0; i < 16; i++) selBest[i] = selTmp[i];
+                    bestErr = totalD;
+                    bestFlip = flip;
+                    bestDiff = 1;
+                    bestT0 = td0; bestT1 = td1;
+                    bestB0r = b0r; bestB0g = b0g; bestB0b = b0b;
+                    bestB1r = b1r; bestB1g = b1g; bestB1b = b1b;
+                }
             }
         }
 
