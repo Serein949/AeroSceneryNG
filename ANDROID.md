@@ -10,7 +10,7 @@ Unofficial Android client for generating AeroFly FS Global (FSG) scenery on the 
 
 ## Download
 
-APK: see the repository's **Releases** page, tag `android-v0.5`.
+APK: see the repository's **Releases** page, release `v2.32` (shared with the desktop build).
 
 - Size: 48,505,855 bytes
 - SHA256: `4F6E7A871677FD95059F1EFDF50BDD7B610797D8FB62F0C43FFA5A576E5832A1`

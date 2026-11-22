@@ -263,6 +263,6 @@ AeroSceneryNG.Cli.exe --tth maph_10_d2c0_9f40.tth --tth-png
 
 - 版本 **0.5**，`arm64-v8a` / `x86_64`，Android 7.0+。
 - 原生 NEON ETC2 编码（etcpak），实测 2 个 L9 瓦片热缓存约 1 秒。
-- APK 见 Releases 的 `android-v0.5`，构建与安装说明见 [`ANDROID.md`](ANDROID.md)。
+- APK 与桌面版在同一个 Release（`v2.32`）中发布，构建与安装说明见 [`ANDROID.md`](ANDROID.md)。
 - 签名 keystore 不包含在仓库中。
 
